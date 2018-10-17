@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 
 public class Client {
@@ -11,7 +12,7 @@ public class Client {
   public static void main(String[] args) {
     try {
       Socket s = new Socket("localhost", 3333);
-      DataInputStream din = new DataInputStream(s.getInputStream());
+      ObjectInputStream din = new ObjectInputStream(s.getInputStream());
       DataOutputStream dout = new DataOutputStream(s.getOutputStream());
       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -22,9 +23,16 @@ public class Client {
         nim = br.readLine();
         dout.writeUTF(nim);
         dout.flush();
-        score = din.readUTF();
-        System.out.println("Final score : " + (score.isEmpty() ? "data not found" : score));
-        System.out.println("Grade score : " + gradeScore(score.isEmpty() ? null : Float.parseFloat(score)));
+        Data result = (Data) din.readObject();
+
+        if (result != null){
+          System.out.println("Nim : " + result.getNim());
+          System.out.println("Final score : " + (result.getScore() == null ? "data not found" : result.getScore()));
+          System.out.println("Grade score : " + gradeScore(result.getScore() == null ? null : result.getScore()));
+        } else {
+          System.out.println("data not found");
+        }
+
       }
 
       dout.close();

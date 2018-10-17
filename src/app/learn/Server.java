@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.PreparedStatement;
@@ -66,8 +67,7 @@ public class Server {
             ss = new ServerSocket(3333);
             Socket s = ss.accept();
             DataInputStream din = new DataInputStream(s.getInputStream());
-            DataOutputStream dout = new DataOutputStream(s.getOutputStream());
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            ObjectOutputStream dout = new ObjectOutputStream(s.getOutputStream());
 
             String nim = "";
             while (!nim.equalsIgnoreCase("stop")) {
@@ -76,13 +76,9 @@ public class Server {
 
 //                Data data = server.search(nim);
                 Data data = server.getDataFromDb(nim);
-                Float score = server.calculateScore(data);
+                if (data != null) data.setScore(server.calculateScore(data));
 
-                if (score != null) {
-                    dout.writeUTF(score.toString());
-                } else {
-                    dout.writeUTF("");
-                }
+                dout.writeObject(data);
                 dout.flush();
             }
             din.close();
