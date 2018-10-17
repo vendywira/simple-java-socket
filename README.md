@@ -11,7 +11,7 @@ adjust field on ConnectDB.java
   private static final String DB_PASSWORD = "";
 ```
 
-execute sql for initialize data
+execute data.sql for initialize data
 ```sql
 CREATE TABLE nilai (
   id INT NOT NULL AUTO_INCREMENT,
