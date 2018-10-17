@@ -4,14 +4,16 @@ simple case for java socket
 simple interaction between server and client for calculate score and get score grade
 based on search by id (nim).
 
-adjust field on ConnectDB.java
+- import lib jdbc mysql-connector to your project
+
+- adjust field on ConnectDB.java
 ```java
   private static final String DB_NAME = "mahasiswa";
   private static final String DB_USER = "root";
   private static final String DB_PASSWORD = "";
 ```
 
-execute data.sql for initialize data
+- execute data.sql for initialize data
 ```sql
 CREATE TABLE nilai (
   id INT NOT NULL AUTO_INCREMENT,
